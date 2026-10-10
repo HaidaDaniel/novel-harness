@@ -55,6 +55,52 @@ chunk counters, token usage, and the EPUB build action.
 *Machine candidate and human final layers remain separate while each chunk can
 be accepted, edited, marked for review, reverted, or requeued.*
 
+## Benchmark snapshot
+
+Novel Harness was used to compare saved translations from multiple local and
+cloud model configurations. The public comparison covers five source chapters,
+10 purposively selected diagnostic fragments, 100 saved candidate translations,
+and 10 variants. Labels were anonymized during scoring; this was AI evaluation,
+not independent human evaluation.
+
+| Variant | Quality | Naturalness | Preferred | Major defects | Minor defects | Cost (USD) |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| GLM-5.3-flash | **3.8** | 3.5 | 2 | 1 | 4 | 0.1836 |
+| Codex / GPT-6 Luna | 3.7 | **4.7** | 3 | 4 | 2 | — |
+| DeepSeek v4-pro | 3.6 | 3.9 | 2 | 4 | 0 | 0.3850 |
+| DeepSeek v4.1-flash | 3.5 | 3.1 | 1 | 2 | 4 | 0.1212 |
+| Longcat 2.5 preview free | 3.2 | 3.5 | 1 | 4 | 4 | 0.0000 |
+| MiMo v2.6-flash | 3.0 | 2.8 | 0 | 7 | 5 | 0.0275 |
+| Qwen3.8-27B R / xhigh | 3.0 | 2.8 | 0 | 6 | 2 | — |
+| Qwen3.8-flash | 2.9 | 3.6 | 0 | 7 | 3 | 0.1558 |
+| Space Bunny | 2.7 | 3.5 | 1 | 11 | 6 | 0.0000 |
+| Qwen3.8-27B B / no-thinking | 2.3 | 2.6 | 0 | 13 | 5 | — |
+
+The bold values mark the highest saved quality and naturalness separately; they
+are not an overall winner. Costs are shown where the saved evidence supports a
+comparable five-chapter estimate.
+
+### Local Qwen profile experiment
+
+The separate local Qwen experiment recorded B, R, PR, and T reasoning/sampling
+profiles. On the saved comparison sample, R scored above B, while B used fewer
+completion tokens and remained useful as a practical draft profile. The public
+profile notes record PR and T's settings without inventing aggregate scores for
+them: [Local Qwen profile notes](docs/benchmarks/local-qwen.md).
+
+These experiments use the same persisted orchestration and evaluation
+infrastructure. Novel Harness exposes OpenAI-compatible direct, OpenCode, and
+Codex runner adapters, so models and execution strategies can be evaluated
+through one run and provenance system. The published table is a model/
+configuration comparison, not a controlled harness-only benchmark.
+
+The saved evidence is available in the [full 10-variant benchmark](docs/benchmarks/model-comparison.md)
+and machine-readable [summary.json](docs/benchmarks/summary.json). The
+fragments were diagnostic and purposively selected, not a held-out random
+benchmark; small score differences are not statistical significance claims;
+Codex/Luna used different saved chunk geometry; and prices were frozen at the
+experiment date. These results are not book-wide literary-quality claims.
+
 ## Architecture
 
 ```mermaid
@@ -129,19 +175,6 @@ novel --config config.quality.example.yaml serve
 
 See the [quickstart](docs/quickstart.md), [configuration](docs/configuration.md),
 [MCP/API](docs/mcp.md), and [provenance](docs/provenance.md) guides.
-
-## Evaluation evidence
-
-The public benchmark summary records aggregate results from five source
-chapters, 10 purposively selected fragments, and 100 candidates across ten
-variants. Labels were anonymized during scoring. Evaluation was AI evaluation,
-not independent human evaluation; costs were frozen at the experiment date;
-and some variants used different chunk geometry. These are observations, not a
-universal leaderboard or a book-wide publication-quality claim.
-
-See [model comparison](docs/benchmarks/model-comparison.md) and
-[local Qwen notes](docs/benchmarks/local-qwen.md). The repository contains
-aggregate metrics and methodology, not source chapters or full translations.
 
 ## Verification
 
