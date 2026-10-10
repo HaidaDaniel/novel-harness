@@ -1,0 +1,78 @@
+novel:
+  title: "Example Japanese novel"
+  author: null
+  source_dir: ./original
+  output_dir: ./outputs
+  books_dir: ./books
+  jobs_dir: ./jobs
+
+translation:
+  source_language: ja
+  target_language: ru
+  chunk_chars: 1500
+  overlap_chars: 1000
+  context_strategy: previous
+  prompts_dir: ./prompts
+  prompt_version: translate-v1
+  glossary_path: ./glossary.yaml
+  temperature: 0.2
+  max_tokens: 12000
+  retries: 2
+  retry_delay_seconds: 5
+
+validation:
+  min_output_chars: 10
+  min_length_ratio: 0.3
+  max_length_ratio: 4.0
+  max_japanese_ratio: 0.05
+  repetition_count: 3
+
+runners:
+  local-quality:
+    type: opencode
+    model: YOUR_MODEL_ID
+    base_url: http://127.0.0.1:8080/v1
+    opencode_transport: cli
+    timeout_seconds: 1800
+    max_tokens: 12000
+    extra_params:
+      chat_template_kwargs: {enable_thinking: false}
+
+translation_presets:
+  default: local-quality
+  presets:
+    local-quality:
+      label: Local quality example
+      description: Explicit provider/model required; example only.
+      runner: local-quality
+      pipeline: draft-light
+      category: local-quality
+      recommended: true
+
+pipelines:
+  direct:
+    stages:
+      - name: translation
+        role: translator
+        prompt_version: translate-v1
+  draft-light:
+    stages:
+      - name: translation
+        role: translator
+        prompt_version: translate-draft-v1
+  translate-edit:
+    stages:
+      - name: translation
+        role: translator
+        prompt_version: translate-v1
+      - name: editing
+        role: editor
+        prompt_version: edit-v1
+  translate-review:
+    stages:
+      - name: translation
+        role: translator
+        prompt_version: translate-v1
+      - name: review
+        role: reviewer
+        prompt_version: review-v1

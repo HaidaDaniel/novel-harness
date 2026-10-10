@@ -1,0 +1,43 @@
+# Offline example for source-only context tests. It is not tied to a provider.
+novel:
+  metadata_path: ./resources/example-book/book.yaml
+  source_dir: ./original/example-book
+  output_dir: ./outputs
+  books_dir: ./books
+  jobs_dir: ./jobs
+translation:
+  source_language: ja
+  target_language: ru
+  chunk_chars: 1500
+  overlap_chars: 1000
+  context_strategy: previous
+  temperature: 0.2
+  max_tokens: 12000
+  prompt_version: translate-v1
+  prompts_dir: ./prompts
+  glossary_path: ./resources/example-book/glossary.yaml
+  name_rules_path: ./resources/example-book/name_rules.yaml
+  output_format: segments-v1
+  retries: 2
+  retry_delay_seconds: 15
+validation:
+  min_output_chars: 10
+  min_length_ratio: 0.3
+  max_length_ratio: 4.0
+  max_japanese_ratio: 0.05
+  repetition_count: 3
+  max_foreign_script_chars: 0
+  reject_service_artifacts: true
+  reject_segment_collapse: true
+  reject_missing_cyrillic: true
+runners:
+  qwen-context:
+    type: opencode
+    model: YOUR_MODEL_ID
+    base_url: http://127.0.0.1:8080/v1
+    api_key_env: OPENAI_API_KEY
+    timeout_seconds: 1800
+    max_tokens: 8000
+    structured_decoding: json-schema
+    extra_params:
+      chat_template_kwargs: {enable_thinking: false}

@@ -1,0 +1,25 @@
+{
+  "schema": "saved-model-comparison-public-v1",
+  "source": "Ten-model translation benchmark",
+  "protocol": {
+    "source_chapters": 5,
+    "selected_fragments": 10,
+    "candidate_translations": 100,
+    "labels_anonymized_during_scoring": true,
+    "evaluation": "AI evaluation; not independent human evaluation",
+    "codex_luna_chunk_geometry": "different saved run geometry",
+    "prices": "frozen at experiment date"
+  },
+  "models": [
+    {"name": "GLM-5.3-flash", "quality": 3.8, "naturalness": 3.5, "preferred": 2, "score_le_2": 0, "major_defects": 1, "minor_defects": 4, "cost_usd": 0.1836},
+    {"name": "Codex / GPT-6 Luna", "quality": 3.7, "naturalness": 4.7, "preferred": 3, "score_le_2": 0, "major_defects": 4, "minor_defects": 2, "cost_usd": null},
+    {"name": "DeepSeek v4-pro", "quality": 3.6, "naturalness": 3.9, "preferred": 2, "score_le_2": 2, "major_defects": 4, "minor_defects": 0, "cost_usd": 0.3850},
+    {"name": "DeepSeek v4.1-flash", "quality": 3.5, "naturalness": 3.1, "preferred": 1, "score_le_2": 1, "major_defects": 2, "minor_defects": 4, "cost_usd": 0.1212},
+    {"name": "Longcat 2.5 preview free", "quality": 3.2, "naturalness": 3.5, "preferred": 1, "score_le_2": 2, "major_defects": 4, "minor_defects": 4, "cost_usd": 0.0},
+    {"name": "MiMo v2.6-flash", "quality": 3.0, "naturalness": 2.8, "preferred": 0, "score_le_2": 2, "major_defects": 7, "minor_defects": 5, "cost_usd": 0.0275},
+    {"name": "Qwen3.8-27B R / xhigh", "quality": 3.0, "naturalness": 2.8, "preferred": 0, "score_le_2": 2, "major_defects": 6, "minor_defects": 2, "cost_usd": null},
+    {"name": "Qwen3.8-flash", "quality": 2.9, "naturalness": 3.6, "preferred": 0, "score_le_2": 5, "major_defects": 7, "minor_defects": 3, "cost_usd": 0.1558},
+    {"name": "Space Bunny", "quality": 2.7, "naturalness": 3.5, "preferred": 1, "score_le_2": 6, "major_defects": 11, "minor_defects": 6, "cost_usd": 0.0},
+    {"name": "Qwen3.8-27B B / no-thinking", "quality": 2.3, "naturalness": 2.6, "preferred": 0, "score_le_2": 7, "major_defects": 13, "minor_defects": 5, "cost_usd": null}
+  ]
+}

@@ -1,0 +1,16 @@
+version: 1
+style: >-
+  Write natural literary Russian. Preserve meaning, dialogue, negation, names,
+  and grammatical gender. Treat this card as review context, not as a substitute
+  for checking the Japanese source.
+cards:
+  - source_terms: [ユキ]
+    name: Юки
+    gender: female
+    forms: [Юки]
+    available_from: 1
+    notes: Synthetic fixture card.
+    evidence:
+      - chapter: 1
+        quote: Юкиは女の子
+summaries: []

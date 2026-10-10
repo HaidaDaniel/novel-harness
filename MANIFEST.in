@@ -1,0 +1,8 @@
+include README.md LICENSE .env.example requirements-dev.lock
+include config.yaml config.quality.example.yaml config.qwen-benchmark.example.yaml glossary.yaml
+recursive-include prompts *.md
+recursive-include docs *.md *.json *.png *.webp
+recursive-include resources/example-book *.yaml *.md
+recursive-include tests *.py
+recursive-include src/novel_harness/web *.html *.js *.css
+include original/.gitkeep

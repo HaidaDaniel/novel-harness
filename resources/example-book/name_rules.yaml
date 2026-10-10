@@ -1,0 +1,13 @@
+# Small synthetic fixture for source-anchored name normalization tests.
+- source: アレン
+  forms:
+    Ален: Аллен
+    Алена: Аллена
+    Алену: Аллену
+    Аленом: Алленом
+    Алене: Аллене
+  review: [Наталии, Шарлотт]
+- source: ルゥ
+  forms:
+    Рю: Ру
+    Руу: Ру

@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Novel Harness — translation workspace</title>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <header>
+    <h1>Novel Harness</h1>
+    <nav id="tabs">
+      <button data-tab="library" class="active">Library</button>
+      <button data-tab="sample">Sample</button>
+      <button data-tab="run">Run</button>
+      <button data-tab="chapter">Chapter</button>
+      <button data-tab="bible">Bible</button>
+      <button data-tab="tm">TM</button>
+    </nav>
+    <span id="notice" class="notice" role="status"></span>
+  </header>
+
+  <main>
+    <section id="tab-library" class="tab">
+      <div class="panel">
+        <div class="panel-head">
+          <h2>Novel Library</h2>
+          <button id="refresh-library">Refresh / rescan</button>
+        </div>
+        <p class="muted">Books discovered under the configured source roots. Select a book
+          to create a run without changing the source configuration.</p>
+        <div id="library-diagnostics" class="warnings"></div>
+        <div id="novel-cards" class="novel-cards"></div>
+        <div id="novel-detail" class="muted"></div>
+      </div>
+      <div class="panel">
+        <h2>Translate a book</h2>
+        <p class="muted">Choose a book and translation mode, inspect its connection,
+          then start a sample. A completed, approved sample unlocks the whole-book run.</p>
+        <label>Book <select id="wizard-novel"></select></label>
+        <label>Translation mode <select id="wizard-preset"></select></label>
+        <label>Execution profile <select id="wizard-profile"></select></label>
+        <p id="wizard-profile-note" class="muted"></p>
+        <details id="wizard-advanced">
+          <summary>Advanced execution details</summary>
+          <div id="wizard-execution" class="kv"></div>
+          <p class="muted">A preset fixes its connection. Choose Custom / Advanced
+            to use another configured profile. Model overrides must be configured
+            explicitly in that profile; this page never copies credentials.</p>
+        </details>
+        <div class="controls">
+          <button id="wizard-start-sample" type="button">Start Sample</button>
+          <button id="wizard-open-sample" type="button" disabled>Open sample</button>
+          <button id="wizard-approve" type="button" disabled>Approve completed sample</button>
+          <button id="wizard-whole-book" type="button" disabled>Translate Whole Book</button>
+        </div>
+        <p id="wizard-status" role="status" class="muted"></p>
+      </div>
+      <div class="panel">
+        <h2>Advanced raw run creation</h2>
+        <p class="muted">Creates a run for the selected book. It does not call a model;
+          press <em>Start</em> after creating.</p>
+        <details id="raw-create-controls">
+          <summary>Show raw run controls</summary>
+        <form id="create-form">
+          <label>Book <select id="create-novel"></select></label>
+          <fieldset class="presets">
+            <legend>Translation mode</legend>
+            <div id="create-presets" class="preset-cards"></div>
+          </fieldset>
+          <p class="muted" id="create-preset-note"></p>
+          <details id="create-advanced">
+            <summary>Custom / Advanced - research / manual configuration</summary>
+            <label>Runner / model
+              <select id="create-runner"></select>
+            </label>
+            <label>Pipeline
+              <select id="create-pipeline">
+                <option value="direct">direct</option>
+                <option value="draft-light">draft-light</option>
+                <option value="translate-edit">translate-edit</option>
+                <option value="translate-review">translate-review</option>
+              </select>
+            </label>
+          </details>
+          <label>Chapters (optional, e.g. 33,49)
+            <input id="create-chapters" type="text" placeholder="all chapters">
+          </label>
+          <label>Chunk chars (optional)
+            <input id="create-chunk-chars" type="number" min="1" placeholder="config default">
+          </label>
+          <button type="submit">Create run</button>
+        </form>
+        <div id="runners-note" class="muted"></div>
+        </details>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <h2>Run dashboard</h2>
+        </div>
+        <p class="muted" id="library-source"></p>
+        <table id="runs-table">
+          <thead>
+            <tr><th>Run</th><th>Status</th><th>Workflow</th><th>Progress</th>
+                <th>Chunks</th><th></th></tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="tab-sample" class="tab hidden">
+      <div class="panel">
+        <h2>Sample-first workflow (recommended)</h2>
+        <p class="muted">Translate one or two chapters first, review them side by side,
+          adjust the book bible/glossary/settings, then explicitly approve before the
+          whole book starts. The CLI can still launch a whole book without this gate.</p>
+        <ol class="muted">
+          <li>Create a sample run (first chapter by default, or one/two chapters).</li>
+          <li>Open the <em>Run</em> and <em>Chapter</em> tabs to review it.</li>
+          <li>Approve the sample when it looks right.</li>
+          <li>Launch the whole book from the approved sample.</li>
+        </ol>
+        <form id="sample-form">
+          <label>Book <select id="sample-novel"></select></label>
+          <fieldset class="presets">
+            <legend>Translation mode</legend>
+            <div id="sample-presets" class="preset-cards"></div>
+          </fieldset>
+          <p class="muted" id="sample-preset-note"></p>
+          <details id="sample-advanced">
+            <summary>Custom / Advanced - research / manual configuration</summary>
+            <label>Runner / model
+              <select id="sample-runner"></select>
+            </label>
+            <label>Pipeline
+              <select id="sample-pipeline">
+                <option value="direct">direct</option>
+                <option value="draft-light">draft-light</option>
+                <option value="translate-edit">translate-edit</option>
+                <option value="translate-review">translate-review</option>
+              </select>
+            </label>
+          </details>
+          <label>Sample chapters (blank = first chapter, max two)
+            <input id="sample-chapters" type="text" placeholder="1 or 1,2">
+          </label>
+          <button type="submit">Create sample</button>
+          <button type="button" id="btn-sample-create-start">Start Sample</button>
+        </form>
+        <p class="muted" id="sample-run-label"></p>
+        <div class="controls">
+          <button id="btn-sample-open">Open sample run</button>
+          <button id="btn-sample-approve">Approve sample</button>
+          <button id="btn-whole-book">Translate Whole Book</button>
+        </div>
+        <div id="sample-status" class="muted"></div>
+      </div>
+    </section>
+
+    <section id="tab-tm" class="tab hidden">
+      <div class="panel">
+        <div class="panel-head">
+          <h2>Translation memory</h2>
+          <button id="refresh-tm">Refresh</button>
+        </div>
+        <p class="muted">User-approved entries only (exact fingerprint reuse). This is
+          distinct from the automatic machine cache; the machine cache is opt-in and
+          never promoted here automatically. No fuzzy matching.</p>
+        <p class="muted" id="tm-count"></p>
+        <table id="tm-table">
+          <thead><tr><th>Fingerprint</th><th>Source run</th><th>Actor</th>
+            <th>Approved</th></tr></thead>
+          <tbody></tbody>
+        </table>
+        <div id="tm-empty" class="muted hidden">No approved translation-memory entries.</div>
+      </div>
+    </section>
+
+    <section id="tab-run" class="tab hidden">
+      <div class="panel">
+        <div class="panel-head">
+          <h2>Run <span id="run-id-label" class="mono"></span></h2>
+          <div class="controls">
+            <button id="btn-start">Start</button>
+            <button id="btn-pause">Pause</button>
+            <button id="btn-resume">Resume</button>
+            <button id="btn-retry">Retry failed</button>
+            <button id="btn-build">Build EPUB</button>
+          </div>
+        </div>
+        <p class="muted">All controls delegate to the persisted Python worker; the page
+          never runs translation inline.</p>
+        <div id="run-summary"></div>
+        <div id="run-progress"></div>
+        <div id="run-usage"></div>
+        <h3>Chapters</h3>
+        <div id="run-chapters"></div>
+      </div>
+    </section>
+
+    <section id="tab-chapter" class="tab hidden">
+      <div class="panel">
+        <div class="panel-head">
+          <h2>Chapter</h2>
+          <div class="controls">
+            <label class="inline" for="chapter-number">Chapter number
+              <input id="chapter-number" type="number" min="1" placeholder="chapter #">
+            </label>
+            <button id="btn-load-chapter">Load</button>
+            <label class="inline"><input id="toggle-chunks" type="checkbox"> chunk boundaries</label>
+          </div>
+        </div>
+        <div id="chapter-warnings" class="warnings"></div>
+        <div id="review-desk"></div>
+        <div class="side-by-side">
+          <div class="column">
+            <h3>Japanese source</h3>
+            <pre id="chapter-source"></pre>
+          </div>
+          <div class="column">
+            <h3>Russian translation</h3>
+            <pre id="chapter-translation"></pre>
+          </div>
+        </div>
+        <div id="chapter-chunks"></div>
+      </div>
+    </section>
+    <section id="tab-bible" class="tab hidden">
+      <div class="panel">
+        <div class="panel-head">
+          <h2>Book bible</h2>
+          <button id="refresh-bible">Refresh</button>
+        </div>
+        <p class="muted">Editable book knowledge. Only <strong>confirmed</strong> and
+          <strong>locked</strong> entries are authoritative translation context; proposals
+          (including model proposals) stay <strong>proposed</strong> until a human
+          confirms or locks them.</p>
+        <p class="muted">Authoritative projection hash:
+          <span id="bible-projection-hash" class="mono"></span></p>
+        <table id="bible-table">
+          <thead>
+            <tr><th>Kind</th><th>Source form</th><th>Target form</th><th>Aliases</th>
+                <th>Trust</th><th></th></tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+        <div id="bible-empty" class="muted hidden">No book-bible entries yet.</div>
+        <h3>Propose entry</h3>
+        <p class="muted">A proposal is always stored as <em>proposed</em>; it can never
+          become authoritative automatically.</p>
+        <form id="bible-form">
+          <label>Kind
+            <select id="bible-kind">
+              <option>character</option><option>place</option><option>organization</option>
+              <option>term</option><option>title</option><option>name</option>
+              <option>expression</option><option>relationship</option>
+            </select>
+          </label>
+          <label>Source form <input id="bible-source" type="text" required></label>
+          <label>Target form <input id="bible-target" type="text" required></label>
+          <label>Aliases (comma separated) <input id="bible-aliases" type="text"></label>
+          <label>Source anchors (comma separated) <input id="bible-anchors" type="text"></label>
+          <label>Notes <input id="bible-notes" type="text"></label>
+          <button type="submit">Propose</button>
+        </form>
+        <div id="bible-note" class="muted"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="muted">
+    The Python service/worker is the single translation engine.
+  </footer>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

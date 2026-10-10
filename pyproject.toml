@@ -1,0 +1,46 @@
+[build-system]
+requires = ["setuptools>=75"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "novel-harness"
+version = "0.1.0"
+description = "Resumable Japanese-to-Russian translation harness"
+readme = "README.md"
+license = "MIT"
+authors = [{ name = "Daniel Haida" }]
+requires-python = ">=3.12"
+dependencies = [
+  "typer>=0.15,<1", "click>=8.1,<9", "rich>=13,<15", "pydantic>=2.10,<3",
+  "PyYAML>=6,<7", "python-dotenv>=1,<2", "openai>=2,<3",
+  "filelock>=3.16,<4", "EbookLib>=0.19,<1",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8,<10", "httpx>=0.28,<1", "ruff>=0.11,<1", "jsonschema>=4,<5"]
+web = ["fastapi>=0.115,<1", "uvicorn>=0.30,<1"]
+
+[project.scripts]
+novel = "novel_harness.cli:main"
+
+[project.urls]
+Repository = "https://github.com/HaidaDaniel/novel-harness"
+Issues = "https://github.com/HaidaDaniel/novel-harness/issues"
+
+[tool.setuptools.data-files]
+"share/novel-harness" = ["README.md", "LICENSE"]
+"share/novel-harness/prompts" = ["prompts/*.md"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+novel_harness = ["web/*.html", "web/*.js", "web/*.css"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
