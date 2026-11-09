@@ -1,0 +1,9 @@
+{
+  "projectName": "novel-harness-public",
+  "defaultMode": "adopt",
+  "documentationProfile": "minimal",
+  "agentStyle": "normal",
+  "taskDirectory": ".tasks",
+  "docsDirectory": "docs",
+  "schemaVersion": 2
+}
